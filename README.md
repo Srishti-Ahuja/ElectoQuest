@@ -1,63 +1,132 @@
-# ElectoQuest 🗳️✨
+# ElectoQuest v2.0 🗳️⚡
 
-**ElectoQuest** is a responsive, interactive single-page application (SPA) designed to gamify the voter registration and preparation process. It transforms the civic duty of voting into a "Fantasy Quest," guiding users through essential steps while rewarding progress with experience points (XP) and digital badges.
+**ElectoQuest** is a production-grade, gamified civic awareness platform that transforms India's voter education into an immersive quest experience. It combines a dark neon aesthetic, AI-powered assistance, and Google Cloud infrastructure to maximize engagement and accessibility.
 
-## 🌟 Key Features
+---
 
-- **Interactive Quest Map**: A visual roadmap featuring sequential "Quest Nodes" that unlock as you progress.
-- **Civic XP System**: Earn points for every step completed, from registration to candidate research.
-- **Digital Rewards Armory**: A dedicated panel displaying your "Forged Badges," which shimmer as you achieve milestones.
-- **Persistence**: Progress is automatically saved to your browser's local storage.
-- **Gamified Cyber-Civic Aesthetic**: A sleek, dark theme with neon accents, glowing paths, and a top progress bar.
-- **MCQ Engagement System**: Unlock quests by answering short election-based quizzes correctly.
-- **Cloud Integrations**: Built with an Express.js backend integrating Google Cloud Logging for observability, and serving assets from a public Google Cloud Storage bucket.
-- **Quality Assurance**: 100% E2E test coverage using Playwright.
+## 🌟 Feature Highlights
 
-## 🗺️ The Journey
+| Feature | Details |
+|---|---|
+| **AI Civic Guru** | Floating chatbot powered by Gemini 1.5 Flash (Vertex AI). Answers election queries in under 100 tokens. |
+| **Google One-Tap Login** | Seamless Firebase/Google Identity Platform sign-in alongside username/password auth. |
+| **8-Quest Spiral Map** | Sequential, unlock-gated quest nodes with MCQ challenges and XP rewards. |
+| **Badge Armory** | 5 collectible digital badges earned upon quest completion. |
+| **Lazy Loading** | All badge images and heavy assets are deferred via `IntersectionObserver`. |
+| **Input Sanitization** | All user inputs are stripped of HTML/script injection vectors before processing. |
+| **Debouncing** | Chatbot input debounced at 300 ms to reduce redundant API calls. |
+| **In-Memory Cache** | TTL-based client-side cache for frequently accessed election data. |
+| **Cloud Logging** | All events streamed to Google Cloud Logging via a `/api/log` endpoint. |
+| **Secret Manager** | API keys injected at runtime via Google Cloud Secret Manager (never hardcoded). |
+| **IAP-Ready Backend** | Server validates `x-goog-iap-jwt-assertion` headers in production. |
+| **Cloud Build CI/CD** | Automated build → push → deploy pipeline via `cloudbuild.yaml`. |
 
-- **Mock Authentication**: Secure your progress with a personalized account (Username/Password).
-- **Expanded Quest Map**: An 8-node roadmap that guides users from registration to long-term civic engagement.
+---
+
+## 🏗️ Architecture
+
+```
+ElectoQuest/
+├── public/                  # Static frontend (served by Express)
+│   ├── index.html           # Semantic HTML with ARIA labels + One-Tap
+│   ├── style_v4.css         # Design system (neon dark theme + chatbot)
+│   └── js/
+│       ├── app.js           # Main entry point — wires all modules
+│       ├── auth.js          # Login / signup / Google Sign-In / logout
+│       ├── chatbot.js       # Civic Guru AI chatbot UI + API calls
+│       ├── quests.js        # Quest data definitions & constants
+│       ├── ui.js            # DOM rendering, modal, XP animation
+│       └── utils.js         # sanitize / debounce / cache / lazy-load
+├── server.js                # Express backend (Logging, Secret Manager, Chat API)
+├── Dockerfile               # Multi-stage secure container (non-root user)
+├── cloudbuild.yaml          # Cloud Build CI/CD pipeline
+├── package.json             # Dependencies + minification scripts
+└── .gitignore               # Excludes node_modules, .env, test artifacts
+```
+
+---
+
+## 🔐 Security
+
+- **Google Cloud IAP** — Backend validates `x-goog-iap-jwt-assertion` header on protected routes (`/api/chat`) in production.
+- **Secret Manager** — `GEMINI_API_KEY` is fetched at runtime from Secret Manager; never stored in source or environment files.
+- **XSS Prevention** — A `sanitize()` utility strips `<script>`, event handlers, and HTML entities from all user-supplied inputs before rendering or API dispatch.
+- **Non-root Docker user** — Container runs as the `node` user to minimize privilege escalation risk.
+- **`.gitignore`** — Ensures `.env`, `node_modules`, and test artifacts never reach the repository.
+
+---
+
+## 🤖 AI Chatbot — Civic Guru
+
+- **Model:** `gemini-1.5-flash` (Free Tier)
+- **Persona:** Civic Guru — an expert on Indian election law, voting rights, and ECI procedures.
+- **Budget Control:** `max_output_tokens: 100` caps cost within the $3 free credit limit.
+- **Debounce:** 300 ms debounce on input prevents redundant API calls.
+- **Endpoint:** `POST /api/chat` — server-side proxy keeps API key off the client.
+
+---
+
+## ⚙️ Google Cloud Services Used
+
+| Service | Purpose |
+|---|---|
+| **Cloud Run** | Serverless container hosting |
+| **Cloud Build** | Automated CI/CD via `cloudbuild.yaml` |
+| **Secret Manager** | Secure API key injection at runtime |
+| **Cloud Logging** | Structured event logging (`electoquest-events`) |
+| **Cloud Monitoring** | Observability via log-based metrics |
+| **Vertex AI (Gemini)** | Gemini 2.0 Flash chatbot backend |
+| **Cloud Storage** | Badge image assets hosting |
+| **Google Identity** | One-Tap / OAuth 2.0 login |
+| **IAP** | Identity-Aware Proxy for Cloud Run security |
+
+---
+
+### Deploy via Cloud Build
+```bash
+gcloud builds submit --config cloudbuild.yaml
+```
+
+This triggers the automated pipeline:
+1. **Build** Docker image tagged with `$SHORT_SHA`
+2. **Push** to Google Container Registry
+3. **Deploy** to Cloud Run (`asia-south1`, 512Mi, max 5 instances)
+
+---
+
+## 🗺️ The Quest Map (8 Nodes)
+
+| # | Quest | XP | Badge |
+|---|---|---|---|
+| 1 | Registration | 100 | Civic Scribe |
+| 2 | Polling Station | 200 | Pathfinder |
+| 3 | Candidates | 300 | Truth Seeker |
+| 4 | Manifestos | 400 | Law Keeper |
+| 5 | Voting Plan | 500 | Guardian |
+| 6 | BLO Connect | 600 | Civic Scribe |
+| 7 | Awareness | 700 | Pathfinder |
+| 8 | Final Pillar | 1000 | Guardian |
+
+---
 
 ## 🧪 Testing
 
-This project uses Playwright for comprehensive E2E testing to simulate user journeys, MCQ interactions, and progress updates.
-
-To run the tests and view the report:
 ```bash
 npm install
 npx playwright install --with-deps chromium
 npx playwright test
 ```
-The test results are available in `test-report.html`.
-- **Civic XP & Leaderboard**: Earn points and forge your identity as a "Guardian of Democracy."
-- **Refined Aesthetics**: A simple yet attractive "Sleek Dark" theme with gold accents.
-
-## 🗺️ The Journey (8 Nodes)
-
-1.  **The Scroll of Registration**: Secure your place on the electoral roll.
-2.  **The Map of Polling**: Find your assigned booth.
-3.  **The Chronicle of Candidates**: Research platforms via MyNeta.
-4.  **The Tome of Measures**: Study party manifestos.
-5.  **The Pledge of the Polls**: Create your Election Day plan.
-6.  **The Watcher's Duty**: Connect with your local BLO.
-7.  **The Messenger's Wing**: Spread civic awareness to your community.
-8.  **Pillar of Democracy**: Fulfill your ultimate duty as an informed voter.
-
-
-
-## 🛠️ Technology Stack
-
-- **HTML5**: Semantic structure.
-- **Vanilla CSS3**: Custom design system with glassmorphism and animations.
-- **Vanilla JavaScript**: State management and interactive logic.
-- **Local Storage API**: Data persistence.
-
-## 🚀 Getting Started
-
-1.  Open application in any modern web browser.
-2.  Enter your "Realm" (State) and Zip Code on the landing page.
-3.  Click "Begin My Quest" to enter the dashboard.
-4.  Complete quests sequentially to unlock new rewards and prepare for Election Day!
 
 ---
-*Created with 💙 for the future of civic engagement.*
+
+## 🛠️ Tech Stack
+
+- **Frontend:** Vanilla HTML5 · CSS3 (custom design system) · ES Modules (no bundler)
+- **Backend:** Node.js · Express.js
+- **AI:** Google Vertex AI — Gemini 1.5 Flash
+- **Auth:** Google Identity Platform (One-Tap) + localStorage
+- **Cloud:** Cloud Run · Cloud Build · Secret Manager · Cloud Logging · Cloud Storage
+
+---
+
+*Created with 💙 for the future of civic engagement — ElectoQuest v2.0*

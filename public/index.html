@@ -1,44 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElectoQuest | Gamified Voter Registration</title>
-    <meta name="description"
-        content="Embark on the ultimate quest to become a registered voter. Forge your legacy, earn badges, and prepare for the polls.">
-    <link rel="stylesheet" href="style_v4.css?v=1.0.2">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>ElectoQuest | Gamified Voter Awareness</title>
+    <meta name="description" content="ElectoQuest — India's gamified civic awareness platform. Complete quests, earn badges, and become an informed voter. Powered by AI Civic Guru.">
+    <meta name="theme-color" content="#0a0b10">
+    <link rel="stylesheet" href="style_v4.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
-
 <body>
     <header>
-        <!-- Top Progress Bar -->
         <div id="top-progress-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Journey Progress">
             <div id="top-progress-bar"></div>
         </div>
     </header>
 
     <main>
-        <!-- Level Up Overlay -->
-    <div id="level-up-overlay">
-        <h1 id="level-up-text">LEVEL UP!</h1>
-    </div>
+        <div id="level-up-overlay" aria-hidden="true">
+            <h2 id="level-up-text">LEVEL UP!</h2>
+        </div>
 
-        <!-- Auth Section -->
         <section id="auth-section" aria-labelledby="auth-title">
             <h1 class="hero-title" id="auth-title">ElectoQuest</h1>
             <article class="config-card">
                 <div id="login-view">
                     <h2 class="section-title">Login</h2>
+                    <div id="google-one-tap-btn" class="g-signin-wrapper" aria-label="Sign in with Google"></div>
+                    <div class="divider"><span>or</span></div>
                     <div class="input-group">
                         <label for="login-username">Username</label>
-                        <input type="text" id="login-username" placeholder="Enter username" aria-required="true">
+                        <input type="text" id="login-username" placeholder="Enter username" aria-required="true" autocomplete="username">
                     </div>
                     <div class="input-group">
                         <label for="login-password">Password</label>
-                        <input type="password" id="login-password" placeholder="Enter password" aria-required="true">
+                        <input type="password" id="login-password" placeholder="Enter password" aria-required="true" autocomplete="current-password">
                     </div>
                     <div id="login-error" class="error-msg hidden" role="alert"></div>
                     <button id="btn-login" class="btn-primary" aria-label="Login to My Quest">Login to My Quest</button>
@@ -49,11 +46,11 @@
                     <h2 class="section-title">Sign Up</h2>
                     <div class="input-group">
                         <label for="signup-username">Username</label>
-                        <input type="text" id="signup-username" placeholder="Choose a username" aria-required="true">
+                        <input type="text" id="signup-username" placeholder="Choose a username" aria-required="true" autocomplete="username">
                     </div>
                     <div class="input-group">
                         <label for="signup-password">Password</label>
-                        <input type="password" id="signup-password" placeholder="Choose a password" aria-required="true">
+                        <input type="password" id="signup-password" placeholder="Choose a password" aria-required="true" autocomplete="new-password">
                     </div>
                     <div id="signup-error" class="error-msg hidden" role="alert"></div>
                     <button id="btn-signup" class="btn-primary" aria-label="Forge My Identity">Forge My Identity</button>
@@ -62,7 +59,6 @@
             </article>
         </section>
 
-        <!-- Onboarding Section -->
         <section id="landing" class="hidden" aria-labelledby="onboarding-title">
             <h1 class="hero-title" id="onboarding-title">ElectoQuest</h1>
             <p class="hero-subtitle">Empower the world's largest democracy. Your quest to become an informed voter begins here.</p>
@@ -82,17 +78,16 @@
                 </div>
                 <div class="input-group">
                     <label for="user-pincode">Pincode</label>
-                    <input type="text" id="user-pincode" placeholder="Enter 6-digit Pincode" aria-required="true">
+                    <input type="text" id="user-pincode" placeholder="Enter 6-digit Pincode" aria-required="true" maxlength="6" pattern="\d{6}" inputmode="numeric">
                 </div>
                 <button id="btn-begin" class="btn-primary" aria-label="Begin My Quest">Begin My Quest</button>
             </article>
         </section>
 
-        <!-- Dashboard -->
         <section id="dashboard" class="hidden" aria-label="User Dashboard">
             <header class="dashboard-header">
                 <div class="header-left">
-                    <div class="logo">ELECTOQUEST</div>
+                    <div class="logo" aria-label="ElectoQuest">ELECTOQUEST</div>
                     <div class="user-greeting">Greetings, <span id="display-username">Hero</span></div>
                 </div>
                 <div class="header-right">
@@ -100,15 +95,12 @@
                 </div>
             </header>
 
-        <div class="dashboard-grid">
-                <!-- Left Side: Spiral Map -->
+            <div class="dashboard-grid">
                 <article class="map-section" aria-label="Quest Map">
                     <div class="spiral-container" id="spiral-map">
                         <div class="map-path-svg" aria-hidden="true">
                             <svg width="100%" height="100%" viewBox="0 0 500 500">
-                                <path id="spiral-path"
-                                    d="M250,250 C300,150 450,250 400,400 C300,550 50,450 100,250 C150,100 350,50 450,250"
-                                    fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2" stroke-dasharray="5,5" />
+                                <path id="spiral-path" d="M250,250 C300,150 450,250 400,400 C300,550 50,450 100,250 C150,100 350,50 450,250" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2" stroke-dasharray="5,5"/>
                             </svg>
                         </div>
 
@@ -147,15 +139,14 @@
                     </div>
                 </article>
 
-                <!-- Right Side: Rewards & Status -->
                 <aside class="rewards-section" aria-label="Rewards and Status">
                     <article class="stats-card">
                         <div class="xp-display-large" aria-live="polite">
                             <span class="xp-label">Civic XP</span>
                             <span id="xp-counter" class="xp-value">0</span>
                         </div>
-                    </article>    
-                    <div class="progress-container">
+                    </article>
+                    <div class="progress-container" aria-hidden="true">
                         <div id="progress-bar" class="progress-fill"></div>
                     </div>
 
@@ -163,23 +154,23 @@
                         <h2 class="armory-title">The Rewards Armory</h2>
                         <div class="badge-grid" role="list">
                             <div class="badge-item" id="badge_registration" role="listitem">
-                                <img src="https://storage.googleapis.com/electoquest-assets-silicon-garage-494118-a1/badge_registration.png" alt="Registration Badge">
+                                <img loading="lazy" src="https://storage.googleapis.com/electoquest-assets-silicon-garage-494118-a1/badge_registration.png" alt="Civic Scribe Badge — Registration">
                                 <span class="badge-name">Civic Scribe</span>
                             </div>
                             <div class="badge-item" id="badge_polling" role="listitem">
-                                <img src="https://storage.googleapis.com/electoquest-assets-silicon-garage-494118-a1/badge_polling.png" alt="Polling Badge">
+                                <img loading="lazy" src="https://storage.googleapis.com/electoquest-assets-silicon-garage-494118-a1/badge_polling.png" alt="Pathfinder Badge — Polling Station">
                                 <span class="badge-name">Pathfinder</span>
                             </div>
                             <div class="badge-item" id="badge_candidates" role="listitem">
-                                <img src="https://storage.googleapis.com/electoquest-assets-silicon-garage-494118-a1/badge_candidates.png" alt="Candidates Badge">
+                                <img loading="lazy" src="https://storage.googleapis.com/electoquest-assets-silicon-garage-494118-a1/badge_candidates.png" alt="Truth Seeker Badge — Candidates">
                                 <span class="badge-name">Truth Seeker</span>
                             </div>
                             <div class="badge-item" id="badge_measures" role="listitem">
-                                <img src="https://storage.googleapis.com/electoquest-assets-silicon-garage-494118-a1/badge_measures.png" alt="Measures Badge">
+                                <img loading="lazy" src="https://storage.googleapis.com/electoquest-assets-silicon-garage-494118-a1/badge_measures.png" alt="Law Keeper Badge — Manifestos">
                                 <span class="badge-name">Law Keeper</span>
                             </div>
                             <div class="badge-item" id="badge_vote" role="listitem">
-                                <img src="https://storage.googleapis.com/electoquest-assets-silicon-garage-494118-a1/badge_vote.png" alt="Vote Badge">
+                                <img loading="lazy" src="https://storage.googleapis.com/electoquest-assets-silicon-garage-494118-a1/badge_vote.png" alt="Guardian Badge — Final Pillar">
                                 <span class="badge-name">Guardian</span>
                             </div>
                         </div>
@@ -188,18 +179,45 @@
             </div>
         </section>
 
-        <!-- Quest Modal -->
         <div id="modal-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
             <article class="modal">
                 <button id="modal-close" class="modal-close" aria-label="Close modal">&times;</button>
-                <div id="modal-content">
-                    <!-- Content injected by JS -->
-                </div>
+                <div id="modal-content"></div>
             </article>
+        </div>
+
+        <div id="chatbot-container" class="chatbot-container" role="complementary" aria-label="Civic Guru AI Chatbot">
+            <button id="chatbot-toggle" class="chatbot-toggle" aria-label="Open Civic Guru chatbot" aria-expanded="false">
+                <i class="fas fa-comments" aria-hidden="true"></i>
+                <span class="chatbot-badge" id="chatbot-badge" aria-hidden="true">AI</span>
+            </button>
+            <div id="chatbot-panel" class="chatbot-panel hidden" role="region" aria-label="Civic Guru conversation">
+                <header class="chatbot-header">
+                    <div class="chatbot-avatar" aria-hidden="true">⚖️</div>
+                    <div>
+                        <div class="chatbot-name">Civic Guru</div>
+                        <div class="chatbot-status">Election Awareness Expert</div>
+                    </div>
+                    <button id="chatbot-close" class="chatbot-close-btn" aria-label="Close Civic Guru">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div id="chatbot-messages" class="chatbot-messages" role="log" aria-live="polite" aria-relevant="additions">
+                    <div class="chat-message bot">
+                        <p>Namaste! I'm <strong>Civic Guru</strong> 🗳️. Ask me anything about voting rights, polling booths, voter registration, or election procedures!</p>
+                    </div>
+                </div>
+                <div class="chatbot-input-area">
+                    <label for="chatbot-input" class="sr-only">Type your election question</label>
+                    <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Ask about voting rights..." maxlength="300" aria-label="Type your election question">
+                    <button id="chatbot-send" class="chatbot-send-btn" aria-label="Send message">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </main>
 
-    <script src="script_v4.js?v=1.0.2"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
-
 </html>

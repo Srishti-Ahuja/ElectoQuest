@@ -1,18 +1,29 @@
 {
   "name": "electoquest",
-  "version": "1.0.0",
-  "description": "Gamified Voter Registration",
+  "version": "2.0.0",
+  "description": "Gamified Election Awareness Platform with AI Civic Guru",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "dev": "NODE_ENV=development node server.js",
+    "minify:js": "npx terser public/js/utils.js -o public/js/utils.min.js --compress --mangle && npx terser public/js/quests.js -o public/js/quests.min.js --compress --mangle && npx terser public/js/auth.js -o public/js/auth.min.js --compress --mangle && npx terser public/js/ui.js -o public/js/ui.min.js --compress --mangle && npx terser public/js/chatbot.js -o public/js/chatbot.min.js --compress --mangle && npx terser public/js/app.js -o public/js/app.min.js --compress --mangle",
+    "minify:css": "npx clean-css-cli public/style_v4.css -o public/style_v4.min.css",
+    "minify": "npm run minify:js && npm run minify:css",
     "test": "playwright test"
   },
   "dependencies": {
     "@google-cloud/logging": "^11.2.0",
     "@google-cloud/secret-manager": "^6.1.1",
-    "express": "^4.21.0"
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^7.1.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.47.0"
+    "@playwright/test": "^1.47.0",
+    "clean-css-cli": "^5.6.3",
+    "terser": "^5.31.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
